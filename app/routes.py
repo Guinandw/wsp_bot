@@ -18,7 +18,7 @@ def verify_webhook():
     mode = request.args.get("hub.mode")
     token = request.args.get("hub.verify_token")
     challenge = request.args.get("hub.challenge")
-
+    print(f"Verification attempt: mode={mode}, token={token}, challenge={challenge}, MI_TOKEN={verify_token}")
     if mode == "subscribe" and token == verify_token:
         return challenge or "", 200
     return "Verification token mismatch", 403
