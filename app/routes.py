@@ -1,6 +1,7 @@
 import os
 
 from flask import Blueprint, jsonify, render_template, request
+from .services import handle_text
 
 from .whatsapp import send_whatsapp_text
 
@@ -56,3 +57,12 @@ def send_message():
 
     response = send_whatsapp_text(to, text)
     return jsonify(response), 200
+
+
+@main_bp.post("/dev/message")
+def dev_message():
+    data = request.get_json(silent=True) or {}
+    text = data.get("text", "")
+    phone = data.get("from", "localuser")
+    reply = handle_text(phone, text)
+    return jsonify({"reply": reply})
